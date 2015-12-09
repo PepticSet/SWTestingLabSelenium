@@ -1,0 +1,29 @@
+@()
+
+@main("Welcome to Play") {
+    <script type='text/javascript' src='@routes.Assets.at("javascripts/index.js")'></script>
+
+    <div id="add-employee-form" class="form-group">
+        <form method="POST" action="@routes.Application.addEmployee()" class="form-horizontal">
+            <input type="text" name="name"/>
+            <input type="number" name="salary">
+            <button>Add Employee</button>
+        </form>
+    </div>
+
+    <div id="employee-table">
+        <table id="employees" class="table table-responsive table-condensed table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Salary</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+}

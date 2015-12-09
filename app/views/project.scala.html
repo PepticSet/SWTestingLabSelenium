@@ -1,0 +1,39 @@
+@(projects: List[Project])
+
+@main("welcome to Play") {
+    <div id="add-project-form" class="form-group">
+        <form method="POST" action="@routes.Application.addProject()" class="form-horizontal">
+            <input type="text" name="name">
+            <input type="text" name="description">
+            <input type="number" name="workHours">
+            <button>Add project</button>
+        </form>
+    </div>
+
+    @if(projects.nonEmpty) {
+        <div id="project-table">
+            <h3>Project Table</h3>
+            <table class="table table-responsive table-condensed table-hover">
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Work Hours</th>
+                    <th>Actions</th>
+                </tr>
+
+                @for(project <- projects) {
+                    <tr>
+                        <td>@project.id</td>
+                        <td>@project.name</td>
+                        <td>@project.description</td>
+                        <td>@project.workHours</td>
+                        <td>
+                            <a class="btn btn-danger" href="@routes.Application.deleteProject(project.id)">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+}
