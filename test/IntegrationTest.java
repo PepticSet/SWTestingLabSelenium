@@ -21,7 +21,18 @@ public class IntegrationTest {
         running(testServer(3333, fakeApplication(inMemoryDatabase())), HTMLUNIT, new Callback<TestBrowser>() {
             public void invoke(TestBrowser browser) {
                 browser.goTo("http://localhost:3333");
-                assertThat(browser.pageSource(), containsString("Add Person"));
+                assertThat(browser.pageSource(), containsString("Yay"));
+
+                browser.click("#yay");
+                assertThat(browser.url(), containsString("employee"));
+
+                browser.fill("#1").with("Karl");
+                browser.fill("#2").with("1000");
+                browser.submit("#sbButtton");
+
+                assertThat(browser.pageSource(), containsString("Karl"));
+                //assertThat(browser.find())
+
             }
         });
     }

@@ -15,5 +15,6 @@ libraryDependencies ++= Seq(
 // other, legacy style, accesses its actions statically.
 routesGenerator := InjectedRoutesGenerator
 
+unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
 
 fork in run := true
