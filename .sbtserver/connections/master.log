@@ -1,0 +1,25 @@
+New log file opened at Fri Jan 22 16:50:59 EET 2016 by 6164@karl-EliteBook
+Taking next connection to: 43377
+New client attempting to connect on port: 45192-43377
+  Address = /127.0.1.1:43377
+This client on port 45192 has uuid e0ef28e3-75fb-4cbc-a4d0-6a08a05df29a configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-e0ef28e3-75fb-4cbc-a4d0-6a08a05df29a
+Taking next connection to: 43377
+New client attempting to connect on port: 45193-43377
+  Address = /127.0.1.1:43377
+Handshake exception on socket: 45193
+sbt.impl.ipc.HandshakeException: Unable to perform handshake
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:46)
+	at sbt.impl.ipc.MultiClientServer.<init>(IPC.scala:150)
+	at sbt.server.SbtServerSocketHandler$$anon$1.run(SbtServerSocketHandler.scala:43)
+Caused by: java.io.EOFException
+	at java.io.DataInputStream.readInt(DataInputStream.java:392)
+	at sbt.impl.ipc.Peer.receive(IPC.scala:95)
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:49)
+	... 2 more
+Taking next connection to: 43377
+New client attempting to connect on port: 45194-43377
+  Address = /127.0.1.1:43377
+This client on port 45194 has uuid b02b8183-cec5-483e-bf19-2e9b664231b5 configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-e0ef28e3-75fb-4cbc-a4d0-6a08a05df29a, activator-b02b8183-cec5-483e-bf19-2e9b664231b5
+Taking next connection to: 43377
