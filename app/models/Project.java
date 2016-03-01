@@ -1,9 +1,11 @@
 package models;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 @Entity
-public class Project {
+public class Project implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -14,4 +16,5 @@ public class Project {
     public String description;
 
     public Double workHours;
+
 }

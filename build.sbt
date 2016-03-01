@@ -8,7 +8,10 @@ libraryDependencies ++= Seq(
   javaJpa,
   "org.hibernate" % "hibernate-entitymanager" % "4.3.7.Final",
   "org.webjars"   %% "webjars-play"           % "2.4.0-1",
-  "org.webjars"   % "bootstrap"               % "3.3.4"
+  "org.webjars"   % "bootstrap"               % "3.3.4",
+  "org.hibernate" % "hibernate-core"          % "3.5.6-Final",
+  "org.hibernate" % "hibernate-annotations"   % "3.5.6-Final",
+  "joda-time"     % "joda-time-hibernate"     % "1.3"
 )
 
 // Play provides two styles of routers, one expects its actions to be injected, the
@@ -16,5 +19,8 @@ libraryDependencies ++= Seq(
 routesGenerator := InjectedRoutesGenerator
 
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
+
+fork in run := false
+fork in test := false
 
 fork in run := true

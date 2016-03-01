@@ -1,0 +1,60 @@
+@(records: List[Record], employees: List[Employee], projects: List[Project])
+
+@main("welcome to Play") {
+    <div id="add-record-form" class="form-group">
+        <form method="POST" action="@routes.Application.addRecord()" class="form-horizontal">
+            <select multiple name="workers" >
+                @for(employee <- employees) {
+                    <option value=@employee.name>@employee.name</option>
+                }
+            </select>
+            <select name="job">
+                @for(project <- projects) {
+                    <option value=@project.name>@project.name</option>
+                }
+            </select>
+            <input type="text" name="startTime">
+            <input type="text" name="endTime">
+            <input type="text" name="location">
+            <input type="text" name="notes">
+            <button>Add Record</button>
+        </form>
+    </div>
+
+    @if(records.nonEmpty) {
+        <div id="project-table">
+            <h3>Project Table</h3>
+            <table class="table table-responsive table-condensed table-hover">
+                <tr>
+                    <th>Id</th>
+                    <th>Workers</th>
+                    <th>Job</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Location</th>
+                    <th>Notes</th>
+                    <th>Actions</th>
+                </tr>
+
+                @for(record <- records) {
+                    <tr>
+                        <td>@record.id</td>
+                        <td>
+                        @for(worker <- record.employees) {
+                            @worker.name
+                        }
+                        </td>
+                        <td>@record.job.name</td>
+                        <td>@record.startTime</td>
+                        <td>@record.endTime</td>
+                        <td>@record.location</td>
+                        <td>@record.notes</td>
+                        <td>
+                            <a class="btn btn-danger" href="@routes.Application.deleteRecord(record.id)">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+}

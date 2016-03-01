@@ -1,7 +1,7 @@
 $ ->
   $.get "/employees", (employees) ->
     $.each employees, (index, employee) ->
-      $("#employees").find('tbody:last')
+      $("#employee-table").find('tbody:last')
       .append($("<tr>")
       .append($("<td>").append(employee.id))
       .append($("<td>").append(employee.name))

@@ -2,9 +2,13 @@ package controllers;
 
 import models.Employee;
 import models.Project;
+import models.Record;
 import play.*;
+import play.Logger;
+import play.api.*;
 import play.mvc.*;
 import play.db.jpa.*;
+import views.formdata.RecordFormData;
 import views.html.*;
 import models.Person;
 import play.data.Form;
@@ -55,7 +59,7 @@ public class Application extends Controller {
 
     @Transactional
     public Result getProjects() {
-        List<Project> projects =(List<Project>) JPA.em().createQuery("select pr from Project pr").getResultList();
+        List<Project> projects = (List<Project>) JPA.em().createQuery("select pr from Project pr").getResultList();
         return ok(project.render(projects));
     }
 
@@ -71,5 +75,30 @@ public class Application extends Controller {
         Project project = Form.form(Project.class).bindFromRequest().get();
         JPA.em().persist(project);
         return redirect(routes.Application.getProjects());
+    }
+
+    @Transactional
+    public Result getRecords() {
+        List<Record> records = (List<Record>) JPA.em().createQuery("select re from Record re").getResultList();
+        List<Project> projects =(List<Project>) JPA.em().createQuery("select pr from Project pr").getResultList();
+        List<Employee> employees = (List<Employee>) JPA.em().createQuery("select e from Employee e").getResultList();
+
+        Logger.info(Integer.toString(records.get(1).getEmployees().size()));
+        return ok(record.render(records, employees, projects));
+    }
+
+    @Transactional
+    public Result addRecord() {
+        Form<RecordFormData> formData = Form.form(RecordFormData.class).bindFromRequest();
+        Record record = Record.makeInstance(formData.get());
+        JPA.em().persist(record);
+        return redirect(routes.Application.getRecords());
+    }
+
+    @Transactional
+    public Result deleteRecord(Long id) {
+        Record record= JPA.em().find(Record.class, id);
+        JPA.em().remove(record);
+        return redirect(routes.Application.getRecords());
     }
 }
