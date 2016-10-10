@@ -1,0 +1,60 @@
+@(projectNames : List[String], projectCosts : List[Double], projectDurations: List[Long])
+
+    @main("Welcome to play") {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js" type="text/javascript"></script>
+
+        <div id="charts">
+            <canvas id="projectCostChart" width="400" height="400"></canvas>
+            <script>
+                // convert java ArrayList<String> to js array
+                var labels = [];
+                @for(name <- projectNames) {
+                    labels.push('@name');
+                }
+
+                var data = {
+                    labels : labels,
+                    datasets : [
+                        {
+                            label : "Project costs",
+                            fillColor : "azure",
+                            strokeColor : "rgba(220,220,220,0.8)",
+                            highlightFill : "rgba(220,220,220,0.75)",
+                            highlightStroke : "rgba(220,220,220,1)",
+                            data : @projectCosts
+                        }
+                    ]
+                };
+
+                // Get the context of the canvas element we want to select
+                var ctx = document.getElementById("projectCostChart").getContext("2d");
+                var myNewChart = new Chart(ctx).Bar(data);
+            </script>
+
+            <canvas id="projectDurationsChart" width="400" height="400"></canvas>
+            <script>
+                // convert java ArrayList<String> to js array
+                var labels = [];
+                @for(name <- projectNames) {
+                    labels.push('@name');
+                }
+
+                var data = [];
+                @for(dur <- projectDurations) {
+                    data.push(
+                        {
+                            value: @dur,
+                            color:"teal",
+                            highlight: "#FF5A5E",
+                            label: labels.shift()
+                        }
+                    );
+                }
+
+                // Get the context of the canvas element we want to select
+                var ctx = document.getElementById("projectDurationsChart").getContext("2d");
+                var myNewChart = new Chart(ctx).Doughnut(data);
+            </script>
+
+        </div>
+    }

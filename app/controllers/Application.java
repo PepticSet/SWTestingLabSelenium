@@ -12,7 +12,10 @@ import views.formdata.RecordFormData;
 import views.html.*;
 import models.Person;
 import play.data.Form;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static play.libs.Json.*;
 
@@ -71,6 +74,14 @@ public class Application extends Controller {
     }
 
     @Transactional
+    public Result editProject(Long id) {
+        // is this a copy paste bug? :O
+        Project project = JPA.em().find(Project.class, id);
+        JPA.em().remove(project);
+        return redirect(routes.Application.getProjects());
+    }
+
+    @Transactional
     public Result addProject() {
         Project project = Form.form(Project.class).bindFromRequest().get();
         JPA.em().persist(project);
@@ -82,8 +93,6 @@ public class Application extends Controller {
         List<Record> records = (List<Record>) JPA.em().createQuery("select re from Record re").getResultList();
         List<Project> projects =(List<Project>) JPA.em().createQuery("select pr from Project pr").getResultList();
         List<Employee> employees = (List<Employee>) JPA.em().createQuery("select e from Employee e").getResultList();
-
-        Logger.info(Integer.toString(records.get(1).getEmployees().size()));
         return ok(record.render(records, employees, projects));
     }
 
@@ -91,7 +100,12 @@ public class Application extends Controller {
     public Result addRecord() {
         Form<RecordFormData> formData = Form.form(RecordFormData.class).bindFromRequest();
         Record record = Record.makeInstance(formData.get());
-        JPA.em().persist(record);
+        try {
+            JPA.em().persist(record);
+        } catch (Exception e) {
+            Logger.error(e.getMessage());
+        }
+//        JPA.em().persist(record);
         return redirect(routes.Application.getRecords());
     }
 
@@ -100,5 +114,34 @@ public class Application extends Controller {
         Record record= JPA.em().find(Record.class, id);
         JPA.em().remove(record);
         return redirect(routes.Application.getRecords());
+    }
+
+    @Transactional(readOnly = true)
+    public Result getStats() {
+        List<Record> records = (List<Record>) JPA.em().createQuery("select re from Record re").getResultList();
+        List<Project> projects =(List<Project>) JPA.em().createQuery("select pr from Project pr").getResultList();
+        List<Employee> employees = (List<Employee>) JPA.em().createQuery("select e from Employee e").getResultList();
+
+        List<Double> projectCosts = new ArrayList<>();
+        List<Long> projectDurations = new ArrayList<>();
+        List<String> projectNames = new ArrayList<>();
+        for(Record record : records) {
+            double currentProjectCost = 0.0;
+            for(Employee employee : record.getEmployees()) {
+                currentProjectCost += employee.salary * record.getJob().workHours / record.getEmployees().size();
+            }
+            projectCosts.add(currentProjectCost);
+            projectNames.add(record.getJob().name);
+
+            // in seconds
+            projectDurations.add(
+                    TimeUnit.MILLISECONDS.toSeconds(
+                            record.endTime.getTime() - record.startTime.getTime()
+                    )
+            );
+        }
+
+
+        return ok(statistics.render(projectNames, projectCosts, projectDurations));
     }
 }

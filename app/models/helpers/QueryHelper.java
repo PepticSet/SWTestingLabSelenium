@@ -24,8 +24,7 @@ public class QueryHelper {
                 return worker;
             }
         }
-//        return null;
-        return getEmployees().get(0);
+        return null;
     }
 
     public static Project findProject(String name) {

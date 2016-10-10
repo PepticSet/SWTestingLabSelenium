@@ -1,5 +1,6 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import models.helpers.QueryHelper;
 import play.Logger;
 import play.data.format.Formats;
@@ -77,6 +78,7 @@ public class Record implements Serializable {
     }
 
     @ManyToMany(cascade = {CascadeType.DETACH})
+    @JsonBackReference
     public List<Employee> employees = new ArrayList<Employee>();
 
     @OneToOne
@@ -100,8 +102,8 @@ public class Record implements Serializable {
     public static Record makeInstance(RecordFormData formData) {
         Record record = new Record();
 
-//        record.employees = new ArrayList<>();
         for (String worker : formData.workers) {
+            Logger.info("yay");
             record.employees.add(QueryHelper.findEmployee(worker));
         }
 

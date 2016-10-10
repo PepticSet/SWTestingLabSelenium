@@ -3,7 +3,7 @@
 @main("welcome to Play") {
     <div id="add-record-form" class="form-group">
         <form method="POST" action="@routes.Application.addRecord()" class="form-horizontal">
-            <select multiple name="workers" >
+            <select multiple name="workers[]" >
                 @for(employee <- employees) {
                     <option value=@employee.name>@employee.name</option>
                 }
@@ -41,7 +41,7 @@
                         <td>@record.id</td>
                         <td>
                         @for(worker <- record.employees) {
-                            @worker.name
+                            @worker.name.concat(";")
                         }
                         </td>
                         <td>@record.job.name</td>

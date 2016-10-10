@@ -1,5 +1,7 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,5 +19,6 @@ public class Employee implements Serializable{
     public Integer salary;
 
     @ManyToMany(cascade = {CascadeType.DETACH}, mappedBy = "employees")
+    @JsonManagedReference
     public List<Record> records = new ArrayList<Record>();
 }
